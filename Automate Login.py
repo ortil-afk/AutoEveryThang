@@ -48,9 +48,9 @@ def main():
     filename = f"{dt.now().strftime('%Y-%m-%d.%H-%M-%S')}.txt"
     with open(filename, "w+") as f:
         f.write(str(outext))
-        
+
     #print current url for funsies
     print(driver.current_url)
 
 
-print(main())
+main()
