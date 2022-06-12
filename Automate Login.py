@@ -10,6 +10,7 @@ def get_driver():
     options.add_argument('start-maximized')
     options.add_argument('disable-dev-shm-usage')
     options.add_argument('no-sandbox')
+    options.add_experimental_option('useAutomationExtension', False)
     options.add_experimental_option('excludeSwitches', ["enable-automation"])
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
     options.add_argument("disable-blink-features=AutomationControlled")
@@ -19,12 +20,30 @@ def get_driver():
     driver.get("http://automated.pythonanywhere.com/login/")
     return driver
 
+def clean_text(text):
+    '''Extract only the temperature from text'''
+    output = float(text.split(": ")[1])
+    return output
+
+
 def main():
     driver = get_driver()
-    time.sleep(2)
+
+    #Find and fill in username and password
     driver.find_element(by="id", value="id_username").send_keys("automated") #typing username
     time.sleep(2)
     driver.find_element(by="id", value="id_password").send_keys("automatedautomated" + Keys.RETURN) #typing password and hitting Enter for us (IMPORTANT)
+    time.sleep(1)
+
+    # Click on home link and wait 2 sec
+    driver.find_element(by="xpath", value="html/body/nav/div/a").click()
+    time.sleep(2)
+
+    # Scrape the temperature value
+    text = driver.find_element(by="xpath", value='/html/body/div[1]/div/h1[2]').text
+    return clean_text(text)
+    #print current url for funsies
+    print(driver.current_url)
 
 
 print(main())
