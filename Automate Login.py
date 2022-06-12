@@ -2,6 +2,7 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
 import time
+from datetime import datetime as dt
 
 def get_driver():
     #setting options to make browsing easier
@@ -41,7 +42,13 @@ def main():
 
     # Scrape the temperature value
     text = driver.find_element(by="xpath", value='/html/body/div[1]/div/h1[2]').text
-    return clean_text(text)
+    outext = clean_text(text)
+
+    #write the output to a text file with time and date
+    filename = f"{dt.now().strftime('%Y-%m-%d.%H-%M-%S')}.txt"
+    with open(filename, "w+") as f:
+        f.write(str(outext))
+        
     #print current url for funsies
     print(driver.current_url)
 
