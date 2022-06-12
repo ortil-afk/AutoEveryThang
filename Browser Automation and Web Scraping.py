@@ -1,10 +1,8 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 import time
 
 # browser config to allow the webdriver to run smoothly
-service = Service("chromedriver.exe")
-
 def get_driver():
     #setting options to make browsing easier
     options = webdriver.ChromeOptions()
@@ -17,7 +15,7 @@ def get_driver():
     options.add_argument("disable-blink-features=AutomationControlled")
 
     # start the driver
-    driver = webdriver.Chrome(service=service, options=options)
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
     driver.get("http://automated.pythonanywhere.com")
     return driver
 
